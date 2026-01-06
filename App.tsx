@@ -1,5 +1,5 @@
 
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useRef, useLayoutEffect } from 'react';
 import Header from './components/Header';
 import Hero from './components/Hero';
 import Problem from './components/Problem';
@@ -44,36 +44,41 @@ const App: React.FC = () => {
     if (currentPath === '#payment-issue') return <PaymentError />;
 
     return (
-      <div
-        className="h-[100dvh] w-full overflow-y-auto overflow-x-hidden snap-y snap-proximity scroll-smooth"
-        onScroll={(e) => {
-          const scrollPos = e.currentTarget.scrollTop;
-          window.dispatchEvent(new CustomEvent('scroll-container', { detail: scrollPos }));
-        }}
-      >
-        <div className="snap-start min-h-[100dvh] flex flex-col relative">
-          <Header />
-          <Hero />
+      <div className="h-[100dvh] w-full flex flex-col bg-[#050505] text-white">
+        <div
+          className="flex-1 overflow-y-auto overflow-x-hidden snap-y snap-proximity scroll-smooth"
+          onScroll={(e) => {
+            const scrollPos = e.currentTarget.scrollTop;
+            window.dispatchEvent(new CustomEvent('scroll-container', { detail: scrollPos }));
+          }}
+        >
+          <div className="snap-start min-h-[100dvh] flex flex-col relative">
+            <Header />
+            <Hero />
+          </div>
+          <div className="snap-start min-h-[100dvh]">
+            <Problem />
+          </div>
+          <div className="snap-start min-h-[100dvh]">
+            <MacBookAudit />
+          </div>
+          <div className="snap-start min-h-[100dvh]">
+            <CreatorStack />
+          </div>
+          <div className="snap-start min-h-[100dvh]">
+            <BookingSection embedUrl={calComUrl} paypalUrl={paypalUrl} />
+          </div>
+          <div className="snap-start min-h-[100dvh]">
+            <TalkToLeopold />
+          </div>
+          <div className="snap-start">
+            <Footer />
+          </div>
         </div>
-        <div className="snap-start min-h-[100dvh]">
-          <Problem />
-        </div>
-        <div className="snap-start min-h-[100dvh]">
-          <MacBookAudit />
-        </div>
-        <div className="snap-start min-h-[100dvh]">
-          <CreatorStack />
-        </div>
-        <div className="snap-start min-h-[100dvh]">
-          <BookingSection embedUrl={calComUrl} paypalUrl={paypalUrl} />
-        </div>
-        <div className="snap-start min-h-[100dvh]">
-          <TalkToLeopold />
-        </div>
-        <div className="snap-start">
-          <Footer />
-        </div>
+
+        {/* Sticky Elements - Outside of the scrollable container */}
         <MobileStickyFooter />
+        <ConsentBanner />
       </div>
     );
   };
@@ -81,7 +86,6 @@ const App: React.FC = () => {
   return (
     <div className="min-h-screen bg-[#050505] text-white selection:bg-white selection:text-black font-sans antialiased overflow-x-hidden transition-all duration-700">
       {renderContent()}
-      <ConsentBanner />
     </div>
   );
 };
