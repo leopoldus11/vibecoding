@@ -1,0 +1,7 @@
+{
+  "name": "AI VibeCoding Course - Leopold Blau",
+  "description": "High-converting landing page for a specialized AI-native development course focusing on Claude, Cursor, and MCPs.",
+  "requestFramePermissions": [
+    "microphone"
+  ]
+}

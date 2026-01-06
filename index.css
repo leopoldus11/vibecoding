@@ -1,0 +1,105 @@
+/**
+ * VibeCoding Design System
+ * Aligned with leopoldblau.com design DNA
+ * Font: Inter | Theme: Dark Premium
+ */
+
+:root {
+    /* Primary Brand Colors */
+    --color-brand-black: #050505;
+    --color-brand-gray: #111111;
+    --color-brand-light: #1a1a1a;
+
+    /* Text Colors */
+    --color-text-primary: #ffffff;
+    --color-text-secondary: rgba(255, 255, 255, 0.6);
+    --color-text-muted: rgba(255, 255, 255, 0.4);
+    --color-text-subtle: rgba(255, 255, 255, 0.2);
+
+    /* Accent Colors */
+    --color-accent-red: #ef4444;
+    --color-accent-green: #22c55e;
+    --color-accent-blue: #3b82f6;
+
+    /* Glassmorphism */
+    --glass-bg: rgba(5, 5, 5, 0.8);
+    --glass-bg-light: rgba(255, 255, 255, 0.05);
+    --glass-border: rgba(255, 255, 255, 0.08);
+    --glass-blur: blur(16px);
+
+    /* Border Radii */
+    --radius-sm: 0.5rem;
+    --radius-md: 0.75rem;
+    --radius-lg: 1rem;
+    --radius-xl: 1.5rem;
+    --radius-2xl: 2rem;
+    --radius-3xl: 2.5rem;
+    --radius-full: 9999px;
+
+    /* Mobile Safe Areas */
+    --safe-area-inset-top: env(safe-area-inset-top, 0px);
+    --safe-area-inset-bottom: env(safe-area-inset-bottom, 0px);
+}
+
+.h-safe-bottom {
+    height: var(--safe-area-inset-bottom);
+}
+
+/* ============================================
+   Base Styles
+   ============================================ */
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+html {
+    scroll-behavior: smooth;
+}
+
+body {
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    background-color: var(--color-brand-black);
+    color: var(--color-text-primary);
+    line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+
+::selection {
+    background-color: white;
+    color: black;
+}
+
+/* ============================================
+   Typography
+   ============================================ */
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+    line-height: 1;
+    letter-spacing: -0.04em;
+}
+
+/* ============================================
+   Glassmorphism Effects
+   ============================================ */
+.glass-dark {
+    background: rgba(5, 5, 5, 0.8);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+/* ============================================
+   Responsive Utilities
+   ============================================ */
+@media (max-width: 768px) {
+    body {
+        font-size: 14px;
+    }
+}

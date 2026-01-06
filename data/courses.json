@@ -1,0 +1,65 @@
+[
+    {
+        "id": "batch-001",
+        "topic": "AI Agent Fundamentals",
+        "date": "January 20 & January 21",
+        "time_slots": "12pm - 3pm CET",
+        "sessions": [
+            {
+                "start": "20260120T110000Z",
+                "end": "20260120T140000Z"
+            },
+            {
+                "start": "20260121T110000Z",
+                "end": "20260121T140000Z"
+            }
+        ],
+        "max_seats": 6,
+        "seats_booked": 0,
+        "is_active": true,
+        "price": 200,
+        "paypal_link": "https://www.paypal.com/paypalme/leoblau/200EUR"
+    },
+    {
+        "id": "batch-002",
+        "topic": "SaaS Builder Intensive",
+        "date": "January 27 & January 28",
+        "time_slots": "12pm - 5pm CET",
+        "sessions": [
+            {
+                "start": "20260127T110000Z",
+                "end": "20260127T160000Z"
+            },
+            {
+                "start": "20260128T110000Z",
+                "end": "20260128T160000Z"
+            }
+        ],
+        "max_seats": 6,
+        "seats_booked": 0,
+        "is_active": true,
+        "price": 333,
+        "paypal_link": "https://www.paypal.com/paypalme/leoblau/333EUR"
+    },
+    {
+        "id": "batch-003",
+        "topic": "Modern UI/UX with AI",
+        "date": "February 10 & February 11",
+        "time_slots": "12pm - 3pm CET",
+        "sessions": [
+            {
+                "start": "20260210T110000Z",
+                "end": "20260210T140000Z"
+            },
+            {
+                "start": "20260211T110000Z",
+                "end": "20260211T140000Z"
+            }
+        ],
+        "max_seats": 6,
+        "seats_booked": 0,
+        "is_active": true,
+        "price": 333,
+        "paypal_link": "https://www.paypal.com/paypalme/leoblau/333EUR"
+    }
+]
