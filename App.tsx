@@ -45,31 +45,29 @@ const App: React.FC = () => {
 
     return (
       <div
-        className="h-[100dvh] w-full overflow-y-auto overflow-x-hidden snap-y snap-mandatory scroll-smooth"
+        className="h-[100dvh] w-full overflow-y-auto overflow-x-hidden snap-y snap-proximity scroll-smooth"
         onScroll={(e) => {
-          // Update a global scroll state if needed, but for now we'll just 
-          // ensure the footer can see this if we pass the value or use a custom event
           const scrollPos = e.currentTarget.scrollTop;
           window.dispatchEvent(new CustomEvent('scroll-container', { detail: scrollPos }));
         }}
       >
-        <div className="snap-start min-h-[100svh] flex flex-col relative">
+        <div className="snap-start min-h-[100dvh] flex flex-col relative">
           <Header />
           <Hero />
         </div>
-        <div className="snap-start min-h-[100svh]">
+        <div className="snap-start min-h-[100dvh]">
           <Problem />
         </div>
-        <div className="snap-start min-h-[100svh]">
+        <div className="snap-start min-h-[100dvh]">
           <MacBookAudit />
         </div>
-        <div className="snap-start min-h-[100svh]">
+        <div className="snap-start min-h-[100dvh]">
           <CreatorStack />
         </div>
-        <div className="snap-start min-h-[100svh]">
+        <div className="snap-start min-h-[100dvh]">
           <BookingSection embedUrl={calComUrl} paypalUrl={paypalUrl} />
         </div>
-        <div className="snap-start min-h-[100svh]">
+        <div className="snap-start min-h-[100dvh]">
           <TalkToLeopold />
         </div>
         <div className="snap-start">
