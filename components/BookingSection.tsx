@@ -12,7 +12,6 @@ interface Course {
   seats_booked: number;
   is_active: boolean;
   price: number;
-  paypal_link: string;
 }
 
 interface BookingSectionProps {
@@ -53,7 +52,9 @@ const BookingSection: React.FC<BookingSectionProps> = ({ embedUrl, paypalUrl }) 
     }
   };
 
-  const finalPaypalUrl = selectedCourse?.paypal_link || paypalUrl || "https://www.paypal.com/paypalme/leoblau/333EUR";
+  const finalPaypalUrl = selectedCourse
+    ? `${paypalUrl || "https://www.paypal.com/paypalme/leoblau"}/${selectedCourse.price}EUR`
+    : paypalUrl || "https://www.paypal.com/paypalme/leoblau";
 
   return (
     <section id="booking" className="py-24 md:py-32 px-4 md:px-6 relative overflow-hidden bg-black/20">

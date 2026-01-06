@@ -95,6 +95,12 @@ const Footer: React.FC = () => {
                 {link.label}
               </a>
             ))}
+            <button
+              onClick={() => window.dispatchEvent(new CustomEvent('open-vibe-consent'))}
+              className="text-[10px] font-black uppercase tracking-widest text-white/20 hover:text-white transition-colors"
+            >
+              Cookie Settings
+            </button>
           </div>
         </div>
       </div>

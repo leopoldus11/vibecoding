@@ -72,6 +72,14 @@ const MobileStickyFooter: React.FC = () => {
 
         <a
           href="#booking"
+          onClick={(e) => {
+            // Smoothly slide out before dismissing
+            setCurrentY(200);
+            setTimeout(() => {
+              setIsDismissed(true);
+              setIsVisible(false);
+            }, 300);
+          }}
           className="bg-white text-black px-6 py-3 rounded-xl font-black text-xs uppercase tracking-widest active:scale-95 transition-all flex items-center gap-2 group"
         >
           Book Now
@@ -80,7 +88,7 @@ const MobileStickyFooter: React.FC = () => {
       </div>
 
       {/* Visual reference that it is slidable */}
-      <div className="flex justify-center mt-2 opacity-20">
+      <div className={`flex justify-center mt-2 opacity-20 transition-opacity duration-300 ${currentY > 0 ? 'opacity-0' : ''}`}>
         <ChevronDown size={14} className="animate-bounce" />
       </div>
 

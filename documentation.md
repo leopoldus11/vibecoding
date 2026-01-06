@@ -50,23 +50,32 @@ The `BookingSection.tsx` component is programmed to:
 2. Fetch live `seats_booked` from Supabase using the match on `id`.
 3. Overlay the live counts onto the UI.
 
----
+### 🧪 How to Test the Connection
+1.  **UI-to-DB**: Select a course on your local site. Click "Test Success". Check your Supabase `course_inventory` table. If the `seats_booked` increased by 1, the connection is alive.
+2.  **DB-to-UI**: Manually change `seats_booked` in your Supabase table to match `max_seats` (e.g., set it to `6`).
+3.  **The Result**: Refresh your website. That specific course card should now be **"Sold Out"** and greyed out automatically.
 
-### Success/Error Handling
-- **Return URL**: `https://vibe.leopoldblau.com/#success`
-- **Cancel URL**: `https://vibe.leopoldblau.com/#payment-issue`
-
-### Live Sync via Webhook
-To update `seats_booked` automatically when someone buys:
-1. **The PayPal Link**: In your PayPal button dashboard, locate the "Advanced Variables" or "Custom ID" field.
-2. **The Variable**: Set it to the Batch ID (e.g., `batch-001`).
-3. **The Webhook**: Point PayPal to your **Supabase Edge Function**.
-   - The function receives the Batch ID via the `custom_id` field.
-   - It runs `UPDATE course_inventory SET seats_booked = seats_booked + 1 WHERE id = custom_id`.
+### 🔄 The "New Batch" Workflow
+When you want to launch a new intake:
+1.  **JSON**: Add a new object to `data/courses.json` with a unique ID (e.g., `batch-004`).
+2.  **Supabase**: Create a new row in the `course_inventory` table with the **exact same ID**.
+3.  **Result**: The website will instantly pick up the new metadata from JSON and the live seat count from Supabase.
 
 ---
 
-## 🗓️ 3. Calendar Optimization (Cal.com)
+## 📂 3. Cross-Project Access (Consent-Cop etc.)
+I strictly follow the "Workspace Rule." If you want me to look at code in your `consent-cop` project:
+1.  Go to your IDE (VS Code / Cursor).
+2.  **File -> Add Folder to Workspace...**
+3.  Select the `consent-cop---ai-powered-gdpr-compliance` directory.
+4.  Once you do this, I will automatically see both projects in my sidebar and can copy/paste logic between them.
+
+---
+
+## 🏗️ 4. Viewport & Layout Logic
+I have implemented **Scroll Snapping** in `App.tsx`. 
+- **The Snap**: Every section (`Hero`, `Problem`, `Booking`) is wrapped in `snap-start`.
+- **The Height**: I use `min-h-[100svh]` (Small Viewport Height) to ensure content is always visible regardless of mobile browser address bars.
 
 ### The "Add to Calendar" Logic
 The `PaymentSuccess.tsx` page automatically detects the selected course and offers:
@@ -120,6 +129,49 @@ To maintain a premium feel with zero manual work, we use **Resend** (resend.com)
 3. **Pre-Intake Reminder**:
    - **Trigger**: Scheduled Cron Job (Supabase).
    - **Content**: 24-hour reminder with the workroom link.
+
+---
+
+## 📊 7. Advanced Analytics & BigQuery (The Data Warehouse)
+
+To scale multiple projects without losing your mind, we use a **Central Hub Architecture**.
+
+### The Orchestration Strategy
+1. **The Hub**: Create one dedicated Google Cloud Project called `Leopold-Data-Warehouse`.
+2. **The Datasets**: Inside this Hub, create separate BigQuery Datasets for each property:
+   - `vibecoding_ga4_export`
+   - `consentcop_ga4_export`
+   - `personal_site_ga4_export`
+3. **The Benefit**: This allows you to write SQL queries that join data across all your sites (e.g., "Show me every user who started on ConsentCop and eventually booked a VibeCoding call").
+
+### How to Plan the Integration
+1. **GA4 Tracking**: Install one GA4 tag per property.
+2. **BigQuery Link**: In GA4 Admin -> Product Links -> BigQuery Links. Point all of them to your `Leopold-Data-Warehouse` project.
+3. **Daily Export**: Enable the "Daily" export frequency (Free tier of BigQuery supports this up to a certain limit).
+
+### Privacy & Consent (VibeConsent V2)
+- **Tool**: `ConsentBanner.tsx`
+- **Logic**: Tracks Essential, Analytics, and Marketing separately.
+- **Cross-Domain**: Sets a cookie on `.leopoldblau.com` so consent carries over from the root domain to the subdomain.
+- **Proof of Consent**: To maintain a legal audit trail, run this SQL in your Supabase Editor:
+
+```sql
+create table consent_logs (
+  id uuid default gen_random_uuid() primary key,
+  timestamp timestamptz default now(),
+  preferences jsonb not null,
+  user_agent text,
+  origin text -- e.g., 'vibe.leopoldblau.com'
+);
+
+-- Enable RLS (Security)
+alter table consent_logs enable row level security;
+create policy "Allow anonymous inserts" on consent_logs for insert with check (true);
+```
+
+### 💳 PayPal Dynamic Pricing
+The app now uses a single `VITE_PAYPAL_URL` (Base: `https://www.paypal.com/paypalme/leoblau`) and dynamically appends the batch price (e.g., `/200EUR`). 
+- **Benefit**: You don't need to manually update links in JSON; just change the `price` field.
 
 ---
 
