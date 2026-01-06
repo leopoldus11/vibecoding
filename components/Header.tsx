@@ -7,11 +7,16 @@ const Header: React.FC = () => {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
   useEffect(() => {
-    const handleScroll = () => {
-      setIsScrolled(window.scrollY > 50);
+    const handleScroll = (e: Event) => {
+      const scrollPos = (e as CustomEvent).detail || window.scrollY;
+      setIsScrolled(scrollPos > 50);
     };
     window.addEventListener('scroll', handleScroll);
-    return () => window.removeEventListener('scroll', handleScroll);
+    window.addEventListener('scroll-container', handleScroll);
+    return () => {
+      window.removeEventListener('scroll', handleScroll);
+      window.removeEventListener('scroll-container', handleScroll);
+    };
   }, []);
 
   const navLinks = [

@@ -10,12 +10,19 @@ const MobileStickyFooter: React.FC = () => {
   const footerRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    const handleScroll = () => {
+    const handleScroll = (e: Event) => {
       if (isDismissed) return;
-      setIsVisible(window.scrollY > 600);
+      const scrollPos = (e as CustomEvent).detail || window.scrollY;
+      setIsVisible(scrollPos > 600);
     };
+
     window.addEventListener('scroll', handleScroll);
-    return () => window.removeEventListener('scroll', handleScroll);
+    window.addEventListener('scroll-container', handleScroll);
+
+    return () => {
+      window.removeEventListener('scroll', handleScroll);
+      window.removeEventListener('scroll-container', handleScroll);
+    };
   }, [isDismissed]);
 
   const onTouchStart = (e: React.TouchEvent) => {
