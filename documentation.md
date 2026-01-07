@@ -110,25 +110,57 @@ To simplify consulting management, we use **one** master calendar event for high
 
 ---
 
-## 📧 6. Email Automation Strategy (The VibeCode Way)
+## 📧 6. Email Automation: The Resend & Supabase Bridge
 
-To maintain a premium feel with zero manual work, we use **Resend** (resend.com) integrated with our Supabase Edge Functions.
+To maintain a premium, automated experience, we use **Resend** as our delivery engine. You need to connect your Resend API Key to Supabase in **two specific places** depending on your goal.
 
-### The Tool: Resend
-- **Why**: 3,000 free emails/month, best-in-class typography, and supports **React Email**.
-- **Setup**: Create an API Key at Resend and add it to your Supabase Secrets: `supabase secrets set RESEND_API_KEY=re_...`
+### Phase A: Verify your Domain (Crucial First Step)
+Before doing anything in Supabase, Resend needs permission to send emails as `@leopoldblau.com`.
+1.  Go to [Resend Dashboard -> Domains](https://resend.com/domains).
+2.  Add `leopoldblau.com` and follow instructions to add DNS records in your host (Strato).
+3.  **Wait** until status shows as **"Verified"**.
 
-### Automated Flows
-1. **Onboarding (Post-Payment)**: 
-   - **Trigger**: PayPal Webhook -> Supabase Function.
-   - **Content**: A "Welcome to the Batch" email with the **PDF Manual attached**.
-   - **Vibe**: Dark mode, clean sans-serif typography, high-contrast buttons.
-2. **Lead Nurture (Guide Download)**:
-   - **Trigger**: `MacBookAudit.tsx` form submission.
-   - **Content**: Immediate delivery of the Zero-to-One guide.
-3. **Pre-Intake Reminder**:
-   - **Trigger**: Scheduled Cron Job (Supabase).
-   - **Content**: 24-hour reminder with the workroom link.
+---
+
+### Phase B: Integration 1 — Official Supabase Auth Emails (SMTP)
+*Use this if you want Supabase to use Resend for "Confirm Email" or "Reset Password" links.*
+
+1.  **In Resend**: Go to [API Keys](https://resend.com/api-keys) and copy your key (`re_...`).
+2.  **In Supabase**: Go to **Project Settings** (Gear icon) -> **Auth**.
+3.  Scroll down to **SMTP Settings**.
+4.  Toggle **Enable Custom SMTP** to **ON**.
+5.  Fill in these exact values:
+    - **Sender Email**: `leopold@leopoldblau.com` (or your verified sender).
+    - **Sender Name**: `Leopold Blau | VibeCoding`
+    - **SMTP Host**: `smtp.resend.com`
+    - **Port**: `465` (Use SSL)
+    - **Username**: `resend` (Literal string "resend").
+    - **Password**: `re_Your_API_Key_Here` (Paste your actual key).
+6.  Click **Save**.
+
+---
+
+### Phase C: Integration 2 — Automated Course Emails (Edge Functions)
+*Use this for "Welcome to the Batch," "Bonus Guide Delivery," and "Automated Invoices."*
+
+#### Option 1: The Dashboard Way (Easiest)
+1.  Go to your **Supabase Dashboard**.
+2.  Go to **Edge Functions** (lightning bolt icon).
+3.  Click **Manage Secrets** (top right).
+4.  Click **Add Secret**.
+5.  Set Name: `RESEND_API_KEY`, Value: `re_...`
+
+#### Option 2: The CLI Way
+```bash
+supabase secrets set RESEND_API_KEY=re_your_actual_key_here
+```
+
+---
+
+### 🚀 Automated "Vibe" Flows
+1. **Onboarding**: Delivery of the **PDF Manual** + Batch details after PayPal success.
+2. **Lead Nurture**: Delivery of the "Zero-to-One" manual upon form submission.
+3. **Typography**: We use **React Email** inside our functions to ensure our emails look like premium newsletters, not spam.
 
 ---
 

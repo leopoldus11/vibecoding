@@ -1,7 +1,9 @@
 
 import React, { useEffect, useState } from 'react';
-import { Clock, ShieldCheck, ArrowRight, UserPlus, Sparkles } from 'lucide-react';
+import { Clock, ShieldCheck, ArrowRight, UserPlus, Sparkles, Terminal } from 'lucide-react';
 import coursesData from '../data/courses.json';
+import { supabase } from '../lib/supabase';
+import PayPalButton from './PayPalButton';
 
 interface Course {
   id: string;
@@ -24,13 +26,21 @@ interface BookingSectionProps {
 const BookingSection: React.FC<BookingSectionProps> = ({ embedUrl, paypalUrl }) => {
   const [courses, setCourses] = useState<Course[]>([]);
   const [selectedCourse, setSelectedCourse] = useState<Course | null>(null);
+  const [preferredEmail, setPreferredEmail] = useState('');
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [bookingId, setBookingId] = useState<string | null>(null);
 
   useEffect(() => {
     // Lead conversion social proof: Add a small buffer to initial bookings
     // This creates urgency while staying within the max_seats limit
     const SOCIAL_PROOF_BUFFER = 2;
 
-    const augmentedCourses = coursesData.map(c => ({
+    const isTestMode = window.location.search.includes('test=true');
+    const filteredCourses = coursesData.filter(c =>
+      c.id !== 'batch-test' || isTestMode
+    );
+
+    const augmentedCourses = filteredCourses.map(c => ({
       ...c,
       seats_booked: Math.min(c.max_seats - 1, c.seats_booked + SOCIAL_PROOF_BUFFER)
     }));
@@ -55,6 +65,41 @@ const BookingSection: React.FC<BookingSectionProps> = ({ embedUrl, paypalUrl }) 
   const finalPaypalUrl = selectedCourse
     ? `${paypalUrl || "https://www.paypal.com/paypalme/leoblau"}/${selectedCourse.price}EUR`
     : paypalUrl || "https://www.paypal.com/paypalme/leoblau";
+
+  const handleBookingInitiated = async () => {
+    if (!selectedCourse || !preferredEmail || isSubmitting) return;
+
+    setIsSubmitting(true);
+
+    try {
+      // 1. Create a "Pending" record in Supabase
+      // We pass this ID to PayPal as 'custom' so we can find the email later
+      const { data, error } = await supabase
+        .from('bookings')
+        .insert([
+          {
+            batch_id: selectedCourse.id,
+            preferred_email: preferredEmail,
+            payment_status: 'pending',
+            payment_amount: selectedCourse.price
+          }
+        ])
+        .select()
+        .single();
+
+      if (error) throw error;
+
+      // 2. Instead of redirecting to a generic link, we store the ID
+      // This will trigger the rendering of the Smart Buttons below
+      setBookingId(data.id);
+      localStorage.setItem('vibe_last_booking_id', data.id);
+
+    } catch (err) {
+      console.error('Booking pre-reg failed:', err);
+    } finally {
+      setIsSubmitting(false);
+    }
+  };
 
   return (
     <section id="booking" className="py-24 md:py-32 px-4 md:px-6 relative overflow-hidden bg-black/20">
@@ -168,17 +213,52 @@ const BookingSection: React.FC<BookingSectionProps> = ({ embedUrl, paypalUrl }) 
             </div>
 
             <div className="w-full lg:w-auto flex flex-col gap-6 relative z-10">
-              <a
-                href={finalPaypalUrl}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="group/btn bg-white text-black px-10 md:px-16 py-6 md:py-10 rounded-[2.5rem] md:rounded-[3.5rem] font-black text-xl md:text-3xl flex flex-col items-center justify-center gap-1 hover:shadow-[0_20px_60px_rgba(255,255,255,0.2)] transition-all hover:-translate-y-1 active:scale-95"
-              >
-                <div className="flex items-center gap-2.5">
-                  <span className="text-[#003087] italic">Pay</span><span className="text-[#009cde] italic">Pal</span>
+              {/* Email Capture */}
+              <div className="flex flex-col gap-3">
+                <label className="text-[10px] font-black uppercase tracking-[0.3em] text-white/30 ml-4">
+                  Where should I send your materials?
+                </label>
+                <input
+                  type="email"
+                  placeholder="name@company.com"
+                  value={preferredEmail}
+                  onChange={(e) => setPreferredEmail(e.target.value)}
+                  className="w-full bg-white/5 border border-white/10 rounded-2xl px-6 py-4 text-white placeholder:text-white/20 focus:outline-none focus:border-white/30 transition-all font-medium"
+                />
+                <p className="text-[9px] text-white/20 italic ml-4">
+                  I'll use this for your PDF Manual and intake details.
+                </p>
+              </div>
+
+              {!bookingId ? (
+                <button
+                  onClick={handleBookingInitiated}
+                  disabled={!preferredEmail || !preferredEmail.includes('@') || isSubmitting}
+                  className={`group/btn bg-white text-black px-10 md:px-16 py-6 md:py-10 rounded-[2.5rem] md:rounded-[3.5rem] font-black text-xl md:text-3xl flex flex-col items-center justify-center gap-1 hover:shadow-[0_20px_60px_rgba(255,255,255,0.2)] transition-all hover:-translate-y-1 active:scale-95 disabled:opacity-30 disabled:grayscale disabled:cursor-not-allowed disabled:transform-none ${isSubmitting ? 'animate-pulse' : ''}`}
+                >
+                  <div className="flex items-center gap-2.5">
+                    <span className="text-[#003087] italic">Pay</span><span className="text-[#009cde] italic">Pal</span>
+                  </div>
+                  <span className="text-[9px] md:text-[11px] uppercase tracking-[0.4em] opacity-40 group-hover/btn:opacity-100 transition-opacity">
+                    {isSubmitting ? 'Syncing Vibe...' : (!preferredEmail || !preferredEmail.includes('@') ? 'Enter Email First' : 'Secure Your Seat')}
+                  </span>
+                </button>
+              ) : (
+                <div className="animate-in fade-in zoom-in-95 duration-500">
+                  <PayPalButton
+                    amount={selectedCourse?.price || 333}
+                    bookingId={bookingId}
+                    onSuccess={() => window.location.hash = 'success'}
+                    onError={() => setBookingId(null)}
+                  />
+                  <button
+                    onClick={() => setBookingId(null)}
+                    className="w-full text-[9px] font-black uppercase tracking-widest text-white/20 hover:text-white/40 mt-4 transition-colors"
+                  >
+                    Change Email / Payment Details
+                  </button>
                 </div>
-                <span className="text-[9px] md:text-[11px] uppercase tracking-[0.4em] opacity-40 group-hover/btn:opacity-100 transition-opacity">One-Click Enrollment</span>
-              </a>
+              )}
 
               {/* Test Loop Controls (Developer Mode) */}
               <div className="flex items-center justify-center gap-4 opacity-0 hover:opacity-100 transition-opacity">
@@ -208,6 +288,28 @@ const BookingSection: React.FC<BookingSectionProps> = ({ embedUrl, paypalUrl }) 
               "Join 47+ founders who have fast-tracked their shipping."
             </p>
           </div>
+
+          {/* Vibe Test Dashboard (Visible only with ?test=true) */}
+          {window.location.search.includes('test=true') && (
+            <div className="mt-12 p-8 rounded-3xl border border-yellow-500/20 bg-yellow-500/5 animate-pulse">
+              <div className="flex items-center gap-3 mb-4 text-yellow-500/60 font-black uppercase text-[10px] tracking-widest">
+                <Terminal size={14} />
+                <span>Developer Vibe Tester</span>
+              </div>
+              <div className="flex flex-wrap gap-4">
+                <button
+                  onClick={() => window.location.hash = 'success'}
+                  className="px-4 py-2 rounded-lg bg-yellow-500/20 text-yellow-500 text-[10px] font-black uppercase hover:bg-yellow-500/40 transition-all"
+                >
+                  Simulate Success UI
+                </button>
+                <div className="text-[10px] text-white/20 max-w-xs leading-relaxed">
+                  Use the <b>PayPal Webhook Simulator</b> in your dashboard to test the real email flow.
+                  Copy a <b>Booking ID</b> from Supabase first!
+                </div>
+              </div>
+            </div>
+          )}
         </div>
       </div>
     </section>
