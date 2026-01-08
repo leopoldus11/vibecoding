@@ -5,13 +5,23 @@ import { Sparkles, ArrowRight, ChevronDown } from 'lucide-react';
 const MobileStickyFooter: React.FC = () => {
   const [isVisible, setIsVisible] = useState(false);
   const [isDismissed, setIsDismissed] = useState(false);
+  const [hasClaimedSeat, setHasClaimedSeat] = useState(false);
   const [startY, setStartY] = useState<number | null>(null);
   const [currentY, setCurrentY] = useState(0);
   const footerRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
+    // Check if user has already purchased in this session
+    let purchaseTracked = false;
+    try {
+      purchaseTracked = sessionStorage.getItem('vibe_purchase_tracked') === 'true';
+      setHasClaimedSeat(purchaseTracked);
+    } catch (e) {
+      console.warn("SessionStorage not available:", e);
+    }
+
     const handleScroll = (e: Event) => {
-      if (isDismissed) return;
+      if (isDismissed || purchaseTracked) return;
       const scrollPos = (e as CustomEvent).detail || window.scrollY;
       setIsVisible(scrollPos > 600);
     };
@@ -46,7 +56,7 @@ const MobileStickyFooter: React.FC = () => {
     setStartY(null);
   };
 
-  if (!isVisible || isDismissed) return null;
+  if (!isVisible || isDismissed || hasClaimedSeat) return null;
 
   return (
     <div

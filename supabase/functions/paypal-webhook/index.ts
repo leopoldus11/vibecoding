@@ -58,32 +58,19 @@ serve(async (req) => {
             return new Response(JSON.stringify({ error: "Booking not found" }), { status: 404 })
         }
 
-        // 5. Build Course Metadata Mapping
-        // In a larger app, this would be a database join. For speed, we use a map.
-        const courseMap: Record<string, { topic: string, date: string, sessions: { start: string, end: string }[] }> = {
-            "batch-001": {
-                topic: "AI Agent Fundamentals",
-                date: "Jan 20 & 21",
-                sessions: [{ start: "20260120T110000Z", end: "20260120T140000Z" }, { start: "20260121T110000Z", end: "20260121T140000Z" }]
-            },
-            "batch-002": {
-                topic: "SaaS Builder Intensive",
-                date: "Jan 27 & 28",
-                sessions: [{ start: "20260127T110000Z", end: "20260127T160000Z" }, { start: "20260128T110000Z", end: "20260128T160000Z" }]
-            },
-            "batch-003": {
-                topic: "Modern UI/UX with AI",
-                date: "Feb 10 & 11",
-                sessions: [{ start: "20260210T110000Z", end: "20260210T140000Z" }, { start: "20260211T110000Z", end: "20260211T140000Z" }]
-            },
-            "batch-test": {
-                topic: "Vibe Integration Test",
-                date: "Instant Access",
-                sessions: []
-            }
+        // 5. Fetch Course Info from Database (Dynamic!)
+        const { data: batchData, error: batchError } = await supabase
+            .from('batches')
+            .select('topic, date, sessions')
+            .eq('id', booking.batch_id)
+            .single()
+
+        if (batchError) {
+            console.warn('[Database] Could not fetch batch info:', batchError)
         }
 
-        const courseInfo = courseMap[booking.batch_id] || { topic: "VibeCoding Intensive", date: "Upcoming", sessions: [] }
+        // Fallback if batch not found
+        const courseInfo = batchData || { topic: 'VibeCoding Intensive', date: 'Upcoming', sessions: [] }
 
         // Generate Google Calendar Links
         const calendarLinks = courseInfo.sessions.map((session, idx) => {

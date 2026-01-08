@@ -1,8 +1,6 @@
-
 import React, { useEffect, useState } from 'react';
-import { ArrowLeft, CheckCircle2, Calendar, Download, Sparkles, Terminal, ExternalLink } from 'lucide-react';
+import { ArrowLeft, CheckCircle2, Calendar, Download, Sparkles, Terminal, ExternalLink, Video } from 'lucide-react';
 import confetti from 'canvas-confetti';
-import coursesData from '../data/courses.json';
 import { supabase } from '../lib/supabase';
 import { analytics } from '../lib/analytics';
 
@@ -10,12 +8,22 @@ const PaymentSuccess: React.FC = () => {
     const [selectedCourse, setSelectedCourse] = useState<any>(null);
 
     useEffect(() => {
-        // Lead selected course from localStorage
-        const savedCourseId = localStorage.getItem('vibe_pending_selection');
-        if (savedCourseId) {
-            const course = coursesData.find(c => c.id === savedCourseId);
-            setSelectedCourse(course);
-        }
+        // Fetch selected course from Supabase
+        const fetchCourse = async () => {
+            const savedCourseId = localStorage.getItem('vibe_pending_selection');
+            if (savedCourseId) {
+                const { data: course, error } = await supabase
+                    .from('batches')
+                    .select('*')
+                    .eq('id', savedCourseId)
+                    .single();
+
+                if (!error && course) {
+                    setSelectedCourse(course);
+                }
+            }
+        };
+        fetchCourse();
 
         // Track: Purchase
         const trackPurchase = async () => {
@@ -100,7 +108,7 @@ const PaymentSuccess: React.FC = () => {
                         See you in the workroom.
                     </p>
 
-                    <div className="grid md:grid-cols-2 gap-4 md:gap-6 text-left mb-8 md:mb-10 max-w-5xl mx-auto">
+                    <div className="grid md:grid-cols-3 gap-4 md:gap-6 text-left mb-8 md:mb-10 max-w-5xl mx-auto">
                         {/* Calendar Section */}
                         <div className="p-6 md:p-8 rounded-[2rem] bg-white/[0.03] border border-white/5 flex flex-col justify-between">
                             <div>
@@ -169,6 +177,38 @@ const PaymentSuccess: React.FC = () => {
                                         <p className="text-[8px] md:text-[9px] text-white/20 uppercase tracking-widest mt-0.5 font-black italic">Sent to your inbox</p>
                                     </div>
                                 </div>
+                            </div>
+                        </div>
+
+                        {/* Schedule Onboarding Call Section */}
+                        <div className="p-6 md:p-8 rounded-[2rem] bg-white/[0.03] border border-white/5 flex flex-col justify-between">
+                            <div>
+                                <Video className="text-brand-light mb-4" size={20} />
+                                <h3 className="font-black uppercase tracking-tight text-base mb-1">Book Your Call</h3>
+                                <p className="text-[11px] md:text-xs text-white/30 leading-relaxed mb-5">Schedule your 1:1 kickoff to align on your project goals.</p>
+                            </div>
+
+                            <div className="space-y-3 mt-auto">
+                                {import.meta.env.VITE_CALCOM_URL ? (
+                                    <a
+                                        href={import.meta.env.VITE_CALCOM_URL}
+                                        target="_blank"
+                                        rel="noopener noreferrer"
+                                        className="w-full py-4 rounded-xl bg-brand-light text-black text-center font-black text-[10px] uppercase tracking-[0.15em] hover:bg-white transition-all block shadow-lg shadow-brand-light/10"
+                                    >
+                                        Schedule Now
+                                    </a>
+                                ) : (
+                                    <div className="p-3.5 rounded-xl bg-white/[0.02] border border-white/5 flex items-center gap-4">
+                                        <div className="w-8 h-8 rounded-lg bg-white/5 flex items-center justify-center flex-shrink-0">
+                                            <Video size={14} className="text-white/30" />
+                                        </div>
+                                        <div>
+                                            <p className="text-[10px] md:text-xs font-bold text-white uppercase tracking-tight">Scheduling Link</p>
+                                            <p className="text-[8px] md:text-[9px] text-white/20 uppercase tracking-widest mt-0.5 font-black italic">Sent to your inbox</p>
+                                        </div>
+                                    </div>
+                                )}
                             </div>
                         </div>
                     </div>

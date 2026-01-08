@@ -1,0 +1,3 @@
+# Model Routing Rules
+- If I am working in `apps/web` or on `.tsx`, `.css`, or `.tailwind` files, prioritize **Gemini 3 Flash**. Focus on visual polish, accessibility, and responsive design.
+- If I am working in `apps/api`, `server/`,  `supabase/`, or on `.ts` (backend logic) or `.sql` files, prioritize **Claude 3.7 Sonnet**. Focus on type safety, data integrity, and error handling.

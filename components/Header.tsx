@@ -8,6 +8,11 @@ const Header: React.FC = () => {
 
   useEffect(() => {
     const handleScroll = (e: Event) => {
+      // Disable scroll effect on mobile
+      if (window.innerWidth < 1024) {
+        setIsScrolled(false);
+        return;
+      }
       const scrollPos = (e as CustomEvent).detail || window.scrollY;
       setIsScrolled(scrollPos > 50);
     };
@@ -31,7 +36,7 @@ const Header: React.FC = () => {
       <header
         className={`fixed top-0 left-0 right-0 z-[100] transition-all duration-500 ${isScrolled
           ? 'py-4 bg-[#050505]/80 backdrop-blur-xl border-b border-white/5'
-          : 'py-8 bg-transparent'
+          : 'py-4 lg:py-8 bg-transparent'
           }`}
       >
         <div className="max-w-screen-xl mx-auto px-6">
@@ -64,7 +69,7 @@ const Header: React.FC = () => {
             <div className="flex items-center gap-4">
               <a
                 href="#booking"
-                className="hidden sm:flex items-center gap-2 bg-white text-black px-8 py-3.5 rounded-full text-xs font-black uppercase tracking-widest hover:bg-white/90 transition-all hover:shadow-[0_0_30px_rgba(255,255,255,0.1)] active:scale-95"
+                className="hidden sm:flex items-center gap-2 bg-[#00F0FF] text-black px-8 py-3.5 rounded-full text-xs font-black uppercase tracking-widest hover:brightness-110 transition-all hover:shadow-[0_0_30px_rgba(0,240,255,0.3)] active:scale-95"
               >
                 Claim Seat
                 <ArrowRight size={14} className="opacity-40" />
@@ -101,7 +106,7 @@ const Header: React.FC = () => {
           <a
             href="#booking"
             onClick={() => setIsMobileMenuOpen(false)}
-            className="w-full max-w-xs bg-white text-black py-6 rounded-[2rem] font-black text-xl text-center shadow-2xl"
+            className="w-full max-w-xs bg-[#00F0FF] text-black py-6 rounded-[2rem] font-black text-xl text-center shadow-[0_0_50px_rgba(0,240,255,0.2)]"
           >
             Claim Your Seat
           </a>
