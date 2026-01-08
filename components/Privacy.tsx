@@ -44,22 +44,36 @@ const Privacy: React.FC = () => {
                     </section>
 
                     <section>
-                        <h2 className="text-xl font-bold text-white mb-4 uppercase tracking-tight">4. Third Parties</h2>
+                        <h2 className="text-xl font-bold text-white mb-4 uppercase tracking-tight">4. Analytics & Tracking</h2>
                         <p>
-                            We use PayPal for payments and Cal.com for scheduling. These third parties have their own privacy policies which you should review. We do not sell your personal data to any third parties.
+                            We use Google Tag Manager (GTM) and Google Analytics 4 (GA4) to understand how visitors interact with the Site. These services use cookies to collect data. However, we have implemented **Google Consent Mode V2**, which means no analytics or marketing cookies are stored unless you explicitly grant permission via our privacy banner.
                         </p>
                     </section>
 
                     <section>
-                        <h2 className="text-xl font-bold text-white mb-4 uppercase tracking-tight">5. Contact</h2>
+                        <h2 className="text-xl font-bold text-white mb-4 uppercase tracking-tight">5. Anonymous Identity</h2>
                         <p>
-                            For more information about our privacy practices, if you have questions, or if you would like to make a complaint, please contact us by e-mail at hello@leopoldblau.com.
+                            To improve our curriculum and batch planning without creating personal profiles, we use a unique, anonymous identifier called `vibe_uid`. This ID is stored in a first-party cookie and allows us to stitch your journey across our subdomains (e.g., from landing to booking) without knowing who you are personally.
+                        </p>
+                    </section>
+
+                    <section>
+                        <h2 className="text-xl font-bold text-white mb-4 uppercase tracking-tight">6. Third Parties</h2>
+                        <p>
+                            We use PayPal for payments, Supabase for secure data storage, and Resend for transactional emails. Each service has its own privacy standards. We never sell your data.
+                        </p>
+                    </section>
+
+                    <section>
+                        <h2 className="text-xl font-bold text-white mb-4 uppercase tracking-tight">7. Contact</h2>
+                        <p>
+                            Questions regarding your data? Contact us at hello@leopoldblau.com.
                         </p>
                     </section>
                 </div>
 
                 <div className="mt-24 pt-10 border-t border-white/5 text-[10px] font-black uppercase tracking-[0.3em] text-white/20">
-                    Last Updated: May 2026
+                    Last Updated: January 2026
                 </div>
             </div>
         </div>

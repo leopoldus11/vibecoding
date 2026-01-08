@@ -3,6 +3,8 @@ import React, { useEffect, useState } from 'react';
 import { ArrowLeft, CheckCircle2, Calendar, Download, Sparkles, Terminal, ExternalLink } from 'lucide-react';
 import confetti from 'canvas-confetti';
 import coursesData from '../data/courses.json';
+import { supabase } from '../lib/supabase';
+import { analytics } from '../lib/analytics';
 
 const PaymentSuccess: React.FC = () => {
     const [selectedCourse, setSelectedCourse] = useState<any>(null);
@@ -14,6 +16,27 @@ const PaymentSuccess: React.FC = () => {
             const course = coursesData.find(c => c.id === savedCourseId);
             setSelectedCourse(course);
         }
+
+        // Track: Purchase
+        const trackPurchase = async () => {
+            const lastBookingId = localStorage.getItem('vibe_last_booking_id');
+            const hasTracked = sessionStorage.getItem('vibe_purchase_tracked');
+
+            if (lastBookingId && !hasTracked) {
+                const { data: booking } = await supabase
+                    .from('bookings')
+                    .select('*')
+                    .eq('id', lastBookingId)
+                    .single();
+
+                if (booking && booking.payment_status === 'completed') {
+                    analytics.purchase(booking);
+                    sessionStorage.setItem('vibe_purchase_tracked', 'true');
+                }
+            }
+        };
+
+        trackPurchase();
 
         // Launch celebratory confetti
         const duration = 3 * 1000;

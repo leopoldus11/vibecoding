@@ -14,6 +14,7 @@ import Imprint from './components/Imprint';
 import PaymentSuccess from './components/PaymentSuccess';
 import PaymentError from './components/PaymentError';
 import ConsentBanner from './components/ConsentBanner';
+import { analytics } from './lib/analytics';
 
 const App: React.FC = () => {
   const [currentPath, setCurrentPath] = useState(window.location.hash || '#home');
@@ -21,6 +22,7 @@ const App: React.FC = () => {
   useEffect(() => {
     // SEO & Global styling
     document.title = "AI VibeCoding Courses | Leopold Blau";
+    analytics.pageView();
 
     const handleHashChange = () => {
       setCurrentPath(window.location.hash || '#home');

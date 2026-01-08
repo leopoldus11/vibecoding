@@ -4,6 +4,7 @@ import { Clock, ShieldCheck, ArrowRight, UserPlus, Sparkles, Terminal } from 'lu
 import coursesData from '../data/courses.json';
 import { supabase } from '../lib/supabase';
 import PayPalButton from './PayPalButton';
+import { analytics } from '../lib/analytics';
 
 interface Course {
   id: string;
@@ -25,15 +26,35 @@ interface BookingSectionProps {
 
 const BookingSection: React.FC<BookingSectionProps> = ({ embedUrl, paypalUrl }) => {
   const [courses, setCourses] = useState<Course[]>([]);
+  const [bookingCounts, setBookingCounts] = useState<Record<string, number>>({});
   const [selectedCourse, setSelectedCourse] = useState<Course | null>(null);
   const [preferredEmail, setPreferredEmail] = useState('');
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [bookingId, setBookingId] = useState<string | null>(null);
 
+  const sectionRef = React.useRef<HTMLElement>(null);
+
   useEffect(() => {
-    // Lead conversion social proof: Add a small buffer to initial bookings
-    // This creates urgency while staying within the max_seats limit
-    const SOCIAL_PROOF_BUFFER = 2;
+    const fetchBookings = async () => {
+      try {
+        const { data, error } = await supabase
+          .from('bookings')
+          .select('batch_id, payment_status')
+          .eq('payment_status', 'completed');
+
+        if (error) throw error;
+
+        const counts: Record<string, number> = {};
+        data.forEach(booking => {
+          counts[booking.batch_id] = (counts[booking.batch_id] || 0) + 1;
+        });
+        setBookingCounts(counts);
+      } catch (err) {
+        console.error('Error fetching real-time bookings:', err);
+      }
+    };
+
+    fetchBookings();
 
     const isTestMode = window.location.search.includes('test=true');
     const filteredCourses = coursesData.filter(c =>
@@ -42,10 +63,22 @@ const BookingSection: React.FC<BookingSectionProps> = ({ embedUrl, paypalUrl }) 
 
     const augmentedCourses = filteredCourses.map(c => ({
       ...c,
-      seats_booked: Math.min(c.max_seats - 1, c.seats_booked + SOCIAL_PROOF_BUFFER)
+      seats_booked: (bookingCounts[c.id] || 0)
     }));
 
     setCourses(augmentedCourses as Course[]);
+
+    // Visibility-based Tracking for Item List
+    let observer: IntersectionObserver;
+    if (sectionRef.current && augmentedCourses.length > 0) {
+      observer = new IntersectionObserver((entries) => {
+        if (entries[0].isIntersecting) {
+          analytics.viewItemList(augmentedCourses);
+          observer.disconnect(); // Only fire once
+        }
+      }, { threshold: 0.1 });
+      observer.observe(sectionRef.current);
+    }
 
     // Persistence: Check if we are returning from a payment error
     const savedCourseId = localStorage.getItem('vibe_pending_selection');
@@ -53,12 +86,19 @@ const BookingSection: React.FC<BookingSectionProps> = ({ embedUrl, paypalUrl }) 
       const pending = augmentedCourses.find(c => c.id === savedCourseId);
       if (pending) setSelectedCourse(pending as Course);
     }
+
+    return () => {
+      if (observer) observer.disconnect();
+    };
   }, []);
 
   const handleSelect = (course: Course) => {
     if (course.seats_booked < course.max_seats) {
       setSelectedCourse(course);
       localStorage.setItem('vibe_pending_selection', course.id);
+
+      // 2. Track: Select Item
+      analytics.selectItem(course);
     }
   };
 
@@ -94,6 +134,9 @@ const BookingSection: React.FC<BookingSectionProps> = ({ embedUrl, paypalUrl }) 
       setBookingId(data.id);
       localStorage.setItem('vibe_last_booking_id', data.id);
 
+      // 3. Track: Begin Checkout
+      analytics.beginCheckout(selectedCourse, preferredEmail);
+
     } catch (err) {
       console.error('Booking pre-reg failed:', err);
     } finally {
@@ -102,7 +145,7 @@ const BookingSection: React.FC<BookingSectionProps> = ({ embedUrl, paypalUrl }) 
   };
 
   return (
-    <section id="booking" className="py-24 md:py-32 px-4 md:px-6 relative overflow-hidden bg-black/20">
+    <section id="booking" ref={sectionRef} className="py-24 md:py-32 px-4 md:px-6 relative overflow-hidden bg-black/20">
       <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,rgba(255,255,255,0.02)_0%,transparent_70%)] pointer-events-none" />
 
       <div className="max-w-6xl mx-auto relative z-10">
