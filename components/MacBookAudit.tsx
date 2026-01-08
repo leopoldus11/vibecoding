@@ -1,24 +1,45 @@
 
 import React, { useState } from 'react';
-import { Terminal, CheckCircle2, Package, Globe, Cpu, MousePointer2, FileText, ArrowRight, X, Loader2 } from 'lucide-react';
+import { Terminal, CheckCircle2, Package, Globe, Cpu, MousePointer2, FileText, ArrowRight, X, Loader2, Sparkles, Zap, Database, Shield, CreditCard, Layout } from 'lucide-react';
 
 const MacBookAudit: React.FC = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [step, setStep] = useState<'form' | 'success'>('form');
   const [isLoading, setIsLoading] = useState(false);
 
-  const requirements = [
+  const preFlight = [
     { name: 'Homebrew', desc: 'The macOS Package Manager', icon: <Package size={16} /> },
     { name: 'Node.js & NPM', desc: 'The engine that runs your apps', icon: <Cpu size={16} /> },
     { name: 'Git & GitHub CLI', desc: 'Version control for your code', icon: <Globe size={16} /> },
     { name: 'Vercel CLI', desc: 'Instant global cloud deployment', icon: <Terminal size={16} /> },
-    { name: 'Cursor', desc: 'AI-Native Code Editor', icon: <MousePointer2 size={16} /> },
+  ];
+
+  const intensivePhases = [
+    {
+      title: "Environment Tuning",
+      desc: "Setting up the Elite Stack: Antigravity, Cursor, and VSCode for maximum AI-sync.",
+      icon: <MousePointer2 size={20} />
+    },
+    {
+      title: "The Studio Scribble",
+      desc: "Scribbling an idea in Google AI Studio, generating the foundation, and downloading the build.",
+      icon: <Layout size={20} />
+    },
+    {
+      title: "Multi-Model MCP Setup",
+      desc: "Bridging Gemini (Frontend) and Claude Code (Backend/Terminal) to initialize your stack.",
+      icon: <Zap size={20} />
+    },
+    {
+      title: "Architect & Deliver",
+      desc: "Live implementation of Supabase Database, Authentication, and PayPal Payment flows.",
+      icon: <Shield size={20} />
+    }
   ];
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     setIsLoading(true);
-    // Simulate API call
     setTimeout(() => {
       setIsLoading(false);
       setStep('success');
@@ -26,92 +47,93 @@ const MacBookAudit: React.FC = () => {
   };
 
   return (
-    <section id="roadmap" className="py-24 md:py-32 px-4 md:px-6 bg-black/40 relative">
-      <div className="max-w-6xl mx-auto">
-        <div className="text-center mb-16 md:mb-20">
-          <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white/5 border border-white/10 text-white/60 text-[10px] font-black uppercase tracking-[0.3em] mb-8">
-            <Terminal size={14} />
+    <section id="roadmap" className="py-24 md:py-40 px-4 md:px-6 bg-black/40 relative overflow-hidden">
+      <div className="absolute top-0 left-1/2 -translate-x-1/2 w-full h-[800px] bg-[radial-gradient(circle_at_center,rgba(0,240,255,0.03)_0,transparent_70%)] pointer-events-none" />
+
+      <div className="max-w-6xl mx-auto relative z-10">
+        <div className="text-center mb-16 md:mb-24">
+          <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-[#00F0FF]/5 border border-[#00F0FF]/20 text-[#00F0FF] text-[10px] font-black uppercase tracking-[0.3em] mb-8">
+            <Sparkles size={14} className="animate-pulse" />
             <span>The VibeCoding Roadmap</span>
           </div>
-          <h2 className="text-4xl md:text-7xl font-black tracking-tighter mb-6 leading-tight">
-            From Setup to <br className="hidden md:block" />
-            <span className="text-white/40 italic">Live Deployment.</span>
+          <h2 className="text-4xl md:text-8xl font-black tracking-tighter mb-8 leading-[0.85] uppercase italic text-white">
+            Idea To <br className="hidden md:block" />
+            <span className="text-white/40 not-italic uppercase">Production.</span>
           </h2>
-          <p className="text-white/40 max-w-2xl mx-auto text-lg leading-relaxed">
-            We don't just build; we optimize your system for speed. You'll master the elite tools of modern engineering—without the 4-year degree.
+          <p className="text-white/40 max-w-2xl mx-auto text-lg md:text-xl leading-relaxed italic">
+            This isn't a tutorial. It's a high-bandwidth engineering sprint where we deploy <span className="text-white">real-world architecture.</span>
           </p>
         </div>
 
-        <div className="grid lg:grid-cols-2 gap-12 items-start">
-          {/* Environment Checklist */}
-          <div className="relative group">
-            <div className="absolute -inset-1 bg-gradient-to-r from-white/10 to-transparent rounded-[2.5rem] blur opacity-20 group-hover:opacity-40 transition duration-1000"></div>
-            <div className="relative bg-[#0a0a0a] border border-white/10 rounded-[2.5rem] overflow-hidden shadow-2xl">
-              <div className="bg-white/5 px-6 py-4 border-b border-white/10 flex items-center justify-between">
-                <div className="flex gap-1.5">
-                  <div className="w-2.5 h-2.5 rounded-full bg-red-500/20 border border-red-500/40"></div>
-                  <div className="w-2.5 h-2.5 rounded-full bg-yellow-500/20 border border-yellow-500/40"></div>
-                  <div className="w-2.5 h-2.5 rounded-full bg-green-500/20 border border-green-500/40"></div>
-                </div>
-                <div className="text-[10px] uppercase font-black tracking-widest text-white/20">Pre-Flight Checklist</div>
-              </div>
-
-              <div className="p-8 space-y-4">
-                {requirements.map((req, i) => (
-                  <div key={i} className="flex items-center justify-between p-4 rounded-2xl bg-white/[0.02] border border-white/5 hover:bg-white/[0.04] transition-colors">
-                    <div className="flex items-center gap-4">
-                      <div className="w-8 h-8 rounded-lg bg-white/5 flex items-center justify-center text-white/40">
-                        {req.icon}
-                      </div>
-                      <div>
-                        <div className="text-sm font-bold text-white uppercase tracking-tight">{req.name}</div>
-                        <div className="text-[11px] text-white/30">{req.desc}</div>
-                      </div>
+        <div className="grid lg:grid-cols-12 gap-8 md:gap-12 items-start">
+          {/* Main Course Path */}
+          <div className="lg:col-span-7 space-y-6">
+            <div className="flex items-center gap-4 mb-8">
+               <div className="w-10 h-10 rounded-full bg-[#00F0FF] text-black flex items-center justify-center font-black">01</div>
+               <h3 className="text-2xl font-black uppercase tracking-tighter text-white italic">The Intensive Curriculum</h3>
+            </div>
+            
+            <div className="grid gap-4">
+              {intensivePhases.map((phase, i) => (
+                <div key={i} className="group relative p-8 rounded-[2.5rem] bg-white/[0.03] border border-white/5 hover:border-[#00F0FF]/30 transition-all duration-500">
+                  <div className="flex items-start gap-6">
+                    <div className="w-12 h-12 rounded-2xl bg-white/5 flex items-center justify-center text-[#00F0FF] group-hover:scale-110 transition-transform duration-500">
+                      {phase.icon}
                     </div>
-                    <CheckCircle2 size={18} className="text-green-500/40" />
+                    <div>
+                      <h4 className="text-xl font-black text-white uppercase tracking-tighter mb-2 italic">{phase.title}</h4>
+                      <p className="text-sm text-white/40 leading-relaxed font-medium">{phase.desc}</p>
+                    </div>
                   </div>
-                ))}
-              </div>
+                </div>
+              ))}
             </div>
           </div>
 
-          {/* Pre-Course Material Call-out */}
-          <div className="space-y-8 lg:pt-8 text-left">
+          {/* Pre-flight & Setup */}
+          <div className="lg:col-span-5 space-y-8">
+            <div className="flex items-center gap-4 mb-8 lg:mb-8">
+               <div className="w-10 h-10 rounded-full border border-white/20 text-white flex items-center justify-center font-black">00</div>
+               <h3 className="text-2xl font-black uppercase tracking-tighter text-white italic">Pre-Flight Setup</h3>
+            </div>
+
+            <div className="bg-[#0a0a0a] border border-white/10 rounded-[2.5rem] overflow-hidden shadow-2xl p-8 space-y-4">
+              <div className="text-[10px] uppercase font-black tracking-widest text-white/20 mb-4 flex items-center gap-2">
+                <Terminal size={12} />
+                Terminal Basics (Automated via PDF)
+              </div>
+              {preFlight.map((req, i) => (
+                <div key={i} className="flex items-center justify-between p-4 rounded-2xl bg-white/[0.02] border border-white/5">
+                  <div className="flex items-center gap-4">
+                    <div className="w-8 h-8 rounded-lg bg-white/5 flex items-center justify-center text-white/40">
+                      {req.icon}
+                    </div>
+                    <div>
+                      <div className="text-[11px] font-black text-white uppercase tracking-tight">{req.name}</div>
+                      <div className="text-[10px] text-white/30">{req.desc}</div>
+                    </div>
+                  </div>
+                  <CheckCircle2 size={16} className="text-green-500/40" />
+                </div>
+              ))}
+            </div>
+
             <div className="p-8 md:p-10 rounded-[2.5rem] bg-white text-black shadow-2xl relative overflow-hidden group">
               <div className="absolute top-0 right-0 p-8 opacity-5">
                 <FileText size={120} />
               </div>
-              <h3 className="text-2xl font-black mb-4 tracking-tight uppercase italic underline decoration-black/10 underline-offset-8">Leopold’s Zero-to-One Mac Setup</h3>
-              <p className="text-black/60 leading-relaxed mb-8 font-medium">
-                The definitive engineering environment guide. We'll ensure your system is a developer's dream before you even write your first prompt.
+              <h3 className="text-xl md:text-2xl font-black mb-4 tracking-tight uppercase italic leading-none">The Zero-to-One <br />Mac Setup Guide</h3>
+              <p className="text-black/60 text-sm leading-relaxed mb-8 font-medium">
+                The definitive engineering environment guide. Master the elite terminal setup I use for multi-million dollar data projects.
               </p>
-
-              <div className="flex flex-col sm:flex-row gap-4 mb-8">
-                <div className="px-4 py-3 rounded-xl bg-black/5 flex items-center gap-2">
-                  <FileText size={16} className="opacity-40" />
-                  <span className="text-[11px] font-black uppercase tracking-widest">32-Page PDF Guide</span>
-                </div>
-              </div>
 
               <button
                 onClick={() => setIsModalOpen(true)}
-                className="w-full py-5 rounded-2xl bg-black text-white font-black text-sm uppercase tracking-widest hover:bg-black/90 transition-all active:scale-95 flex items-center justify-center gap-2"
+                className="w-full py-5 rounded-2xl bg-black text-white font-black text-xs uppercase tracking-widest hover:brightness-110 transition-all active:scale-95 flex items-center justify-center gap-2"
               >
-                Download The Guide
-                <Terminal size={14} />
+                Download PDF Manual
+                <ArrowRight size={14} />
               </button>
-            </div>
-
-            <div className="p-8 rounded-[2.5rem] border border-white/5 bg-white/[0.02] flex items-start gap-5">
-              <div className="w-12 h-12 rounded-full bg-white/5 flex flex-shrink-0 items-center justify-center text-white/20">
-                <CheckCircle2 size={24} />
-              </div>
-              <div>
-                <h4 className="font-bold text-white mb-1 uppercase tracking-tight">Built for Performance</h4>
-                <p className="text-sm text-white/30 leading-relaxed">
-                  We don't waste time on buggy installs. Whether you join the course or not, this guide sets you up with the elite stack I use to build multi-million dollar data pipelines.
-                </p>
-              </div>
             </div>
           </div>
         </div>
@@ -119,9 +141,9 @@ const MacBookAudit: React.FC = () => {
 
       {/* Lead capture modal */}
       {isModalOpen && (
-        <div className="fixed inset-0 z-[1000] flex items-center justify-center p-6">
-          <div className="absolute inset-0 bg-black/90 backdrop-blur-xl" onClick={() => setIsModalOpen(false)} />
-          <div className="relative bg-[#0a0a0a] border border-white/10 rounded-[3rem] w-full max-w-lg p-10 md:p-12 shadow-[0_0_100px_rgba(255,255,255,0.05)]">
+        <div className="fixed inset-0 z-[1000] flex items-center justify-center p-6 text-white">
+          <div className="absolute inset-0 bg-black/95 backdrop-blur-3xl" onClick={() => setIsModalOpen(false)} />
+          <div className="relative bg-[#0a0a0a] border border-white/10 rounded-[3rem] w-full max-w-lg p-10 md:p-12 shadow-[0_0_100px_rgba(0,240,255,0.1)]">
             <button
               onClick={() => setIsModalOpen(false)}
               className="absolute top-8 right-8 text-white/40 hover:text-white transition-colors"
@@ -133,36 +155,25 @@ const MacBookAudit: React.FC = () => {
               <>
                 <div className="mb-10 text-center">
                   <h3 className="text-3xl font-black mb-3 tracking-tighter uppercase italic">Secure The Guide.</h3>
-                  <p className="text-white/40 text-sm">Enter your details and I'll send the download link to your inbox immediately.</p>
+                  <p className="text-white/40 text-sm">Get the terminal configuration that 10x's your shipping speed.</p>
                 </div>
 
                 <form onSubmit={handleSubmit} className="space-y-5">
-                  <div>
-                    <input
-                      required
-                      type="text"
-                      placeholder="Your Name"
-                      className="w-full bg-white/5 border border-white/10 rounded-2xl p-5 text-sm focus:outline-none focus:border-white/20 transition-colors"
-                    />
-                  </div>
-                  <div>
-                    <input
-                      type="text"
-                      placeholder="Company (Optional)"
-                      className="w-full bg-white/5 border border-white/10 rounded-2xl p-5 text-sm focus:outline-none focus:border-white/20 transition-colors"
-                    />
-                  </div>
-                  <div>
-                    <input
-                      required
-                      type="email"
-                      placeholder="Your Email"
-                      className="w-full bg-white/5 border border-white/10 rounded-2xl p-5 text-sm focus:outline-none focus:border-white/20 transition-colors"
-                    />
-                  </div>
+                  <input
+                    required
+                    type="text"
+                    placeholder="Your Name"
+                    className="w-full bg-white/5 border border-white/10 rounded-2xl p-5 text-sm focus:outline-none focus:border-[#00F0FF]/30 transition-colors"
+                  />
+                  <input
+                    required
+                    type="email"
+                    placeholder="Your Email"
+                    className="w-full bg-white/5 border border-white/10 rounded-2xl p-5 text-sm focus:outline-none focus:border-[#00F0FF]/30 transition-colors"
+                  />
                   <button
                     disabled={isLoading}
-                    className="w-full py-6 rounded-2xl bg-white text-black font-black text-xs uppercase tracking-[0.2em] hover:bg-white/90 transition-all flex items-center justify-center gap-2 group"
+                    className="w-full py-6 rounded-2xl bg-[#00F0FF] text-black font-black text-xs uppercase tracking-[0.2em] hover:brightness-110 transition-all flex items-center justify-center gap-2 group"
                   >
                     {isLoading ? (
                       <Loader2 className="animate-spin" size={18} />
@@ -173,17 +184,17 @@ const MacBookAudit: React.FC = () => {
                       </>
                     )}
                   </button>
-                  <p className="text-[10px] text-center text-white/20 uppercase tracking-widest pt-4">Zero Spam. High Vibe Engineering only.</p>
+                  <p className="text-[10px] text-center text-white/20 uppercase tracking-widest pt-4 italic">No Fluff. Elite Engineering Only.</p>
                 </form>
               </>
             ) : (
               <div className="text-center py-10 animate-in fade-in zoom-in duration-500">
-                <div className="w-20 h-20 rounded-full bg-green-500/20 text-green-500 flex items-center justify-center mx-auto mb-8">
+                <div className="w-20 h-20 rounded-full bg-[#00F0FF]/20 text-[#00F0FF] flex items-center justify-center mx-auto mb-8">
                   <CheckCircle2 size={40} />
                 </div>
-                <h3 className="text-3xl font-black mb-4 tracking-tighter uppercase">It's On The Way.</h3>
-                <p className="text-white/40 leading-relaxed mb-10">
-                  Check your inbox. I've sent you the **Zero-to-One Mac Setup** Guide. Start building.
+                <h3 className="text-3xl font-black mb-4 tracking-tighter uppercase italic">It's On The Way.</h3>
+                <p className="text-white/40 leading-relaxed mb-10 text-sm">
+                  Check your inbox. Start with the terminal setup. We'll handle the rest in the intensive.
                 </p>
                 <button
                   onClick={() => setIsModalOpen(false)}
