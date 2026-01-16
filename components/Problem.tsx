@@ -1,6 +1,6 @@
 
 import React from 'react';
-import { ShieldX, Boxes, Gauge, Sparkles, Zap, CheckCircle2 } from 'lucide-react';
+import { ShieldX, Boxes, Gauge, Sparkles, Zap, CheckCircle2, Clock, Terminal, ShieldAlert } from 'lucide-react';
 
 const Problem: React.FC = () => {
   return (
@@ -11,36 +11,36 @@ const Problem: React.FC = () => {
       <div className="max-w-6xl mx-auto px-6 relative z-10">
         <div className="text-center mb-16 md:mb-24">
           <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-red-500/10 border border-red-500/20 text-red-400 text-[10px] font-black uppercase tracking-[0.3em] mb-8">
-            <Zap size={14} className="animate-pulse" />
-            <span>The Efficiency Wall</span>
+            <ShieldAlert size={14} className="animate-pulse" />
+            <span>The DIY Trap</span>
           </div>
           <h2 className="text-4xl md:text-7xl font-black tracking-tighter mb-8 leading-[0.9] uppercase italic">
-            Stop Renting <br className="hidden md:block" />
-            <span className="text-white/40">Your Future.</span>
+            Stop Looping. <br className="hidden md:block" />
+            <span className="text-white/40">Start Shipping.</span>
           </h2>
-          <p className="text-white/40 text-lg md:text-xl max-w-2xl mx-auto leading-relaxed">
-            Drag-and-drop builders are the <span className="text-red-400 font-bold underline decoration-red-400/20 underline-offset-8">"Landlord Trap"</span> of the internet. You pay forever, but you never own the deed.
+          <p className="text-white/40 text-lg md:text-xl max-w-2xl mx-auto leading-relaxed italic">
+            YouTube is free, but your time isn't. Every month spent "learning" is a month of AI overhead and <span className="text-red-400 font-bold underline decoration-red-400/20 underline-offset-8">missed revenue.</span>
           </p>
         </div>
 
         <div className="grid md:grid-cols-3 gap-6 md:gap-8">
           {[
             {
-              icon: <ShieldX className="text-red-400" size={32} />,
-              title: "Zero Ownership",
-              desc: "They raise prices? You pay. They shut down? You lose everything. Your app is a guest on their server.",
+              icon: <Clock className="text-red-400" size={32} />,
+              title: "The Infinite Loop",
+              desc: "3 months later and your app is still local. You're paying ChatGPT $20/mo to debug a 'Hello World'.",
               accent: "red"
             },
             {
-              icon: <Boxes className="text-white/40" size={32} />,
-              title: "Feature Walls",
-              desc: "The second you need a custom logic flow, the 'Easy' tool says no. You're trapped in their template.",
+              icon: <Terminal className="text-white/40" size={32} />,
+              title: "Trial & Error",
+              desc: "I've already broken the APIs and fixed the deployment bugs. Skip the frustration and use vetted workflows.",
               accent: "white"
             },
             {
-              icon: <Gauge className="text-white/40" size={32} />,
-              title: "Slow & Generic",
-              desc: "Bloated code and slow load times. Your customers can tell it's a template. It lacks the elite vibe.",
+              icon: <Zap className="text-white/40" size={32} />,
+              title: "The Signal Gap",
+              desc: "Tutorials teach you how to code. I teach you how to build a business with code. There is a massive difference.",
               accent: "white"
             }
           ].map((item, i) => (
@@ -62,12 +62,12 @@ const Problem: React.FC = () => {
           <div className="grid md:grid-cols-2 gap-12 items-center relative z-10">
             <div>
               <div className="text-[#00F0FF] text-[10px] font-black uppercase tracking-[0.4em] mb-4">The VibeCode Solution</div>
-              <h3 className="text-3xl md:text-5xl font-black mb-8 tracking-tighter leading-none uppercase italic">Build Like <br />An Engineer.</h3>
+              <h3 className="text-3xl md:text-5xl font-black mb-8 tracking-tighter leading-none uppercase italic">The Shortcut <br />To Production.</h3>
               <div className="space-y-6">
                 {[
-                  "Describe features in English, get production code.",
-                  "Own 100% of the IP. Host anywhere, forever.",
-                  "Zero technical debt. Scale as fast as your ideas."
+                  "Vetted workflows that bypass tutorial-hell.",
+                  "Multi-model MCP architecture (Gemini + Claude).",
+                  "Direct access to the VibeCoders Telegram Moat."
                 ].map((text, i) => (
                   <div key={i} className="flex items-center gap-4">
                     <div className="w-6 h-6 rounded-full bg-[#00F0FF]/10 flex items-center justify-center text-[#00F0FF]">
@@ -87,10 +87,10 @@ const Problem: React.FC = () => {
                   <span className="text-[10px] font-mono ml-2 uppercase tracking-widest">vibe_terminal</span>
                </div>
                <div className="font-mono text-sm space-y-3">
-                  <div className="text-white/20">$ ai build --feature "recurring payments"</div>
-                  <div className="text-[#00F0FF]">&gt;&gt; Integrating Stripe API...</div>
-                  <div className="text-[#00F0FF]">&gt;&gt; Writing secure checkout logic...</div>
-                  <div className="text-green-400">&gt;&gt; Feature deployed to Vercel Edge.</div>
+                  <div className="text-white/20">$ ai build --feature "production_saas"</div>
+                  <div className="text-[#00F0FF]">&gt;&gt; Bypassing infinite DIY loop...</div>
+                  <div className="text-[#00F0FF]">&gt;&gt; Extracting expert workflow...</div>
+                  <div className="text-green-400">&gt;&gt; Founder ready for market.</div>
                   <div className="animate-pulse text-white/40">_</div>
                </div>
             </div>

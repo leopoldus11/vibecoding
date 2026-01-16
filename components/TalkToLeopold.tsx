@@ -1,32 +1,32 @@
 
 import React from 'react';
-import { Rocket, BarChart3, ArrowUpRight, MessageSquare, Laptop } from 'lucide-react';
+import { Rocket, BarChart3, ArrowUpRight, MessageSquare, Laptop, Users } from 'lucide-react';
 
 const TalkToLeopold: React.FC = () => {
     const pathways = [
         {
-            title: "Strategy Call",
-            desc: "Discuss course fit, career pivoting, or get unblocked on your AI journey. High-intent focused.",
-            icon: <MessageSquare size={24} />,
-            label: "Book Strategy Session",
+            title: "Telegram Moat (HQ)",
+            desc: "Access the exclusive Telegram HQ. A high-signal network of VibeCoders and founders. 24/7 collaboration and vibe checks.",
+            icon: <Users size={24} />,
+            label: "Join The Movement",
             bgColor: "bg-white/5",
-            intent: "strategy"
+            intent: "community"
         },
         {
             title: "3-Day MVP Launch",
-            desc: "Transform your idea into a functional web app in 72 hours. We build, you launch. Fast-track production.",
+            desc: "Don't have time for the course? We'll build your production web app in 72 hours. From idea to sale, no middleman required.",
             icon: <Rocket size={24} />,
             label: "Request Build Call",
             bgColor: "bg-[#003087]/20",
             intent: "mvp"
         },
         {
-            title: "Analytics Engineering",
-            desc: "Expert tracking, data infrastructure, and CRM synchronization. Data-driven growth for founders.",
-            icon: <BarChart3 size={24} />,
-            label: "Request Audit Call",
+            title: "Strategy Call",
+            desc: "Discuss course fit, career pivoting, or get unblocked on your AI architecture. High-bandwidth, founder-to-founder.",
+            icon: <MessageSquare size={24} />,
+            label: "Book Strategy Session",
             bgColor: "bg-white/5",
-            intent: "analytics"
+            intent: "strategy"
         }
     ];
 
@@ -41,13 +41,13 @@ const TalkToLeopold: React.FC = () => {
 
             <div className="max-w-6xl mx-auto relative z-10 text-left">
                 <div className="mb-16 md:mb-24">
-                    <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white/5 border border-white/10 text-white/40 text-[9px] font-black uppercase tracking-[0.3em] mb-8">
-                        <Laptop size={14} />
-                        <span>High-Ticket Collaboration</span>
+                    <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-[#00F0FF]/5 border border-[#00F0FF]/20 text-[#00F0FF] text-[9px] font-black uppercase tracking-[0.3em] mb-8">
+                        <Users size={14} />
+                        <span>High-Signal Network</span>
                     </div>
-                    <h2 className="text-4xl md:text-7xl font-black tracking-tighter mb-6 leading-tight uppercase italic">Expert <br className="hidden md:block" /><span className="text-white/40">Collaborations.</span></h2>
+                    <h2 className="text-4xl md:text-7xl font-black tracking-tighter mb-6 leading-tight uppercase italic text-white">The VibeCode <br className="hidden md:block" /><span className="text-white/40">Advantage.</span></h2>
                     <p className="text-white/40 max-w-2xl text-lg leading-relaxed font-medium">
-                        Beyond the course, I provide elite-level engineering and strategy to help you scale faster. Let's build the future together.
+                        Information is free. Access to elite workflows and a community of builders is your <span className="text-white">unfair advantage.</span>
                     </p>
                 </div>
 
@@ -64,13 +64,13 @@ const TalkToLeopold: React.FC = () => {
                                 <div className="w-14 h-14 rounded-2xl bg-white/5 flex items-center justify-center mb-8 border border-white/5 group-hover:scale-110 transition-transform duration-500">
                                     <div className="text-white/60 group-hover:text-white transition-colors">{path.icon}</div>
                                 </div>
-                                <h3 className="text-2xl font-black mb-4 tracking-tight uppercase italic">{path.topic || path.title}</h3>
+                                <h3 className="text-2xl font-black mb-4 tracking-tight uppercase italic text-white">{path.topic || path.title}</h3>
                                 <p className="text-white/40 text-sm leading-relaxed mb-10 font-medium">{path.desc}</p>
                             </div>
 
                             <a
-                                href={`${baseBookingUrl}?intent=${path.intent}&${sourceTag}`}
-                                target="_blank"
+                                href={path.intent === 'community' ? '#booking' : `${baseBookingUrl}?intent=${path.intent}&${sourceTag}`}
+                                target={path.intent === 'community' ? '_self' : '_blank'}
                                 rel="noopener noreferrer"
                                 className="w-full py-5 rounded-[2rem] bg-white text-black font-black text-xs uppercase tracking-widest flex items-center justify-center gap-2 hover:bg-white/90 transition-all active:scale-95 relative z-10"
                             >
@@ -82,8 +82,8 @@ const TalkToLeopold: React.FC = () => {
                 </div>
 
                 <div className="mt-20 text-center md:text-left">
-                    <p className="text-[10px] font-black uppercase tracking-[0.4em] text-white/10">
-                        Personalized 1-on-1 Strategy & Implementation
+                    <p className="text-[10px] font-black uppercase tracking-[0.4em] text-white/10 italic">
+                        Elite Performance. Zero Fluff. Build the Future.
                     </p>
                 </div>
             </div>

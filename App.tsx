@@ -8,7 +8,6 @@ import CreatorStack from './components/CreatorStack';
 import BookingSection from './components/BookingSection';
 import TalkToLeopold from './components/TalkToLeopold';
 import Footer from './components/Footer';
-import MobileStickyFooter from './components/MobileStickyFooter';
 import Privacy from './components/Privacy';
 import Imprint from './components/Imprint';
 import PaymentSuccess from './components/PaymentSuccess';
@@ -79,7 +78,6 @@ const App: React.FC = () => {
         </div>
 
         {/* Sticky Elements - Outside of the scrollable container */}
-        <MobileStickyFooter />
         <ConsentBanner />
       </div>
     );

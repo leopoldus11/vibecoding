@@ -193,9 +193,17 @@ const BookingSection: React.FC<BookingSectionProps> = ({ embedUrl, paypalUrl }) 
       localStorage.setItem('vibe_last_booking_id', data.id);
       analytics.beginCheckout(selectedCourse, preferredEmail);
 
-    } catch (err) {
-      console.error('Booking pre-reg failed:', err);
-      alert('Failed to reserve seat. Please try again.');
+    } catch (err: any) {
+      console.error('❌ Booking pre-reg failed:', err);
+      console.error('Error details:', {
+        message: err.message,
+        code: err.code,
+        details: err.details,
+        hint: err.hint
+      });
+      
+      const errorMessage = err.message || 'Failed to reserve seat. Please try again.';
+      alert(`Booking Error: ${errorMessage}\n\nCheck console for details (F12)`);
     } finally {
       setIsSubmitting(false);
     }

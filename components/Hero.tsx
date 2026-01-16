@@ -59,15 +59,14 @@ const Hero: React.FC = () => {
         </div>
 
         <h1 className="text-[2.75rem] sm:text-7xl md:text-8xl lg:text-9xl font-black tracking-tighter mb-6 md:mb-10 leading-[0.85] uppercase italic">
-          Ship Your App <br />
-          <span className="text-white/20 not-italic">In 6 Hours.</span>
+          YouTube is <br />
+          <span className="text-white/20 not-italic">Too Expensive.</span>
         </h1>
 
-        <p className="text-base md:text-xl text-white/50 max-w-[320px] sm:max-w-xl md:max-w-2xl mx-auto mb-12 md:mb-20 leading-relaxed font-medium px-4">
-          The intensive for founders who want to stop talking and start deploying. 
-          <span className="text-white/80 block mt-2">
-            No syntax. No experience. <br className="sm:hidden" />
-            <span className="whitespace-nowrap">Just results.</span>
+        <p className="text-base md:text-lg lg:text-xl text-white/50 max-w-[340px] sm:max-w-3xl mx-auto mb-12 md:mb-20 leading-relaxed font-medium px-4">
+          <span className="md:block">Stop paying the "DIY Tax." The VibeCoding Intensive is an <span className="text-white italic">Engineering Extraction</span></span>
+          <span className="text-white/80 md:block mt-1">
+            that gets you production-ready in <span className="text-white font-bold">weeks, not months.</span>
           </span>
         </p>
 
@@ -81,7 +80,7 @@ const Hero: React.FC = () => {
               
               <div className="relative w-full sm:w-auto bg-[#00F0FF] text-black px-12 py-5 md:px-16 md:py-7 rounded-2xl md:rounded-[2rem] text-lg md:text-xl font-black transition-all flex items-center justify-center group active:scale-95 overflow-hidden">
                 <div className="absolute inset-0 w-full h-full bg-gradient-to-r from-transparent via-white/40 to-transparent -translate-x-full group-hover:animate-[glimmer_2s_infinite] transition-transform pointer-events-none" />
-                <span className="relative z-10">Claim Your Seat</span>
+                <span className="relative z-10 uppercase tracking-tighter">Claim Your Seat</span>
                 <ArrowRight size={24} className="ml-3 group-hover:translate-x-1 transition-transform relative z-10" />
               </div>
             </a>
@@ -97,7 +96,7 @@ const Hero: React.FC = () => {
             className="w-full sm:w-auto bg-white text-black px-10 py-5 md:px-14 md:py-7 rounded-2xl md:rounded-[2rem] text-lg md:text-xl font-black hover:bg-white/90 transition-all flex items-center justify-center gap-3 group active:scale-95 shadow-[0_20px_50px_rgba(255,255,255,0.1)]"
           >
             <Play size={18} className="text-black/40 group-hover:text-black transition-colors fill-current" />
-            See The Roadmap
+            See The Shortcut
           </a>
         </div>
 
@@ -111,8 +110,8 @@ const Hero: React.FC = () => {
               <span className="text-[10px] uppercase tracking-widest font-black">Ownership</span>
            </div>
            <div className="flex flex-col items-center gap-1">
-              <span className="text-2xl font-black text-white leading-none">1:6</span>
-              <span className="text-[10px] uppercase tracking-widest font-black">Mentor Ratio</span>
+              <span className="text-2xl font-black text-white leading-none">PRO</span>
+              <span className="text-[10px] uppercase tracking-widest font-black">Community</span>
            </div>
            <div className="flex flex-col items-center gap-1">
               <span className="text-2xl font-black text-white leading-none">LIVE</span>
